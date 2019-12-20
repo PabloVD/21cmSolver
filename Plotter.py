@@ -17,8 +17,8 @@ fig_T, (ax_T, ax_21) = plt.subplots(2, 1, sharex=True)
 fig_Ja, (axJa) = plt.subplots(1, 1)
 fig_T.subplots_adjust(hspace=0)
 
-# Astrophysical parameters grid (same than in Runner.py)
-xi_ionvals = [1.]
+# Astrophysical parameters grid
+xi_ionvals = [0.]
 xi_heatvals = [0.1,1.,10.]
 Tvirvals = [1.e3,1.e4]
 

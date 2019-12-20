@@ -15,17 +15,17 @@ import os, time
 
 #--- INITIAL ARRANGEMENTS ---#
 
-T_init =  Tk_ad(z_init)
-xe_init = 1.e-4
-zvec = np.linspace(z_init,z_end,num=50)
-lnavec = np.log(1./(1.+zvec))
 Delta = 1.000000e+00 
-Ttilde_init = TtoTtilde(T_init,xe_init,z_init,1.)
+T_init =  Tk_ad(z_init)*Delta**(2./3.)
+xe_init = 1.e-4
+zvec = np.linspace(z_init,z_end,num=100)
+lnavec = np.log(1./(1.+zvec))
+Ttilde_init = TtoTtilde(T_init,xe_init,z_init,Delta)
 
 #--- MAIN ---#
 
 # Solving evolution equations
-sol = solve_ivp(lambda lna, y: EvolutionEquations(lna, y, Delta), [lnavec[0],lnavec[-1]], [0., xe_init, Ttilde_init], t_eval = lnavec)
+sol = solve_ivp(lambda lna, y: EvolutionEquations(lna, y, Delta), [lnavec[0],lnavec[-1]], [0., xe_init, Ttilde_init], t_eval = lnavec, method="LSODA")
 Q, xe, Tt = sol.y[0], sol.y[1], sol.y[2]
 Tk = TtildetoT(Tt,xe,zvec,Delta)
 xHIIbar = Q + (1.-Q)*xe

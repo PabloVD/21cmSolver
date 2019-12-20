@@ -29,7 +29,7 @@ def eta_lya(Tk):
     return hplanck*nualpha/m_pc2/eVtoerg*(nualpha/DeltanuDalpha(Tk))
 
 def voigt(x,Tk):
-    # taken form here https://scipython.com/book/chapter-8-scipy/examples/the-voigt-profile/
+    # taken from here https://scipython.com/book/chapter-8-scipy/examples/the-voigt-profile/
     #return a_voigt(Tk)/np.pi**(3./2.)*...
     #sigma = DeltanuDalpha(Tk)/np.sqrt(2.)
     #return np.real(special.wofz((x + 1j*a_voigt(Tk))/sigma/np.sqrt(2.))) / sigma/np.sqrt(2.*np.pi)
@@ -86,7 +86,18 @@ def S_alpha_wing(z,Tk):
 
 def S_alpha_wing_1st(z,Tk):
     alf = eta_lya(Tk)*(3.*a_voigt(Tk)/2./np.pi/gammaGP(z))**(1./3.)
-    return 1.-4.*np.pi/(3.*np.sqrt(3.)*special.gamma(2./3.))*alf
+    OneMinusSalpha = 4.*np.pi/(3.*np.sqrt(3.)*special.gamma(2./3.))*alf
+    return 1.-OneMinusSalpha
+
+def S_alpha_wing_2nd(z,Tk):
+    alf = eta_lya(Tk)*(3.*a_voigt(Tk)/2./np.pi/gammaGP(z))**(1./3.)
+    OneMinusSalpha = 4.*np.pi/(3.*np.sqrt(3.)*special.gamma(2./3.))*alf - 8.*np.pi/(3.*np.sqrt(3.)*special.gamma(1./3.))*alf**2.
+    return 1.-OneMinusSalpha
+
+def S_alpha_wing_3rd(z,Tk):
+    alf = eta_lya(Tk)*(3.*a_voigt(Tk)/2./np.pi/gammaGP(z))**(1./3.)
+    OneMinusSalpha = 4.*np.pi/(3.*np.sqrt(3.)*special.gamma(2./3.))*alf - 8.*np.pi/(3.*np.sqrt(3.)*special.gamma(1./3.))*alf**2. + 4./3.*alf**3.
+    return 1.-OneMinusSalpha
 
 # Hirata fits
 

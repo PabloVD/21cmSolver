@@ -104,7 +104,6 @@ def alpha_recA(T):   # Case A, from Abel '97, cm^3/s
     return caseA
 
 def alpha_recB(T):   # Case B, from Spitzer '78, 21cmFAST, cm^3/s
-    #caseB = 2.6e-13*(T/1.e4)**(-0.85)   # Case B, from Bernal et al.
     caseB = 2.59e-13*(T/1.e4)**(-0.75)
     return caseB
 
@@ -132,10 +131,6 @@ def xray_heat_full( z, xe ): # UPDATE
     return hnu_thresh/kelvintoeV*xi_heat/(a_spec/(a_spec-1.))*frac_heat(xe)*c*(1.+z)**3.*n0_b*int/Hz(z)
 
 def xray_heat_ots( z, xe ):    # On the spot aprox. xi_heat is f_X of Furlanetto '06
-    # old xi_heat = 0.012 and hnu0=0.5 keV correspond to fiducial values of eq. 11 of Furlanetto '06, f_X=1
-    # return f_X*frac_heat(xe)*fstar*mu*m_p/Msun*year_sec/kelvintoerg*3.4e40*dFcolldz(Tvir,z)/dtdz(z)/Hz(z)
-    #return hnu_thresh/kelvintoeV*xi_heat*frac_heat(xe)*dFcolldz(Tvir,z)/dtdz(z)/Hz(z)
-    #LSFR = hnu_thresh/kelvintoeV*xi_heat/(1./kelvintoerg*year_sec*mu*m_p/Msun*fstar)
     return LSFR/kelvintoerg*year_sec*mu*m_p/Msun*fstar*frac_heat(xe)*dFcolldz(Tvir,z)/dtdz(z)/Hz(z)
 
 def xray_heat_ots_complete( z, xe ):    # On the spot aprox. with 2nd term with \nu_th
@@ -148,20 +143,15 @@ def xray_heat( z, xe ):
         return xray_heat_full( z, xe )
 
 def heat_21( z, xH, Tk, Delta ):
-    #if Tk<1.e-4:    Tk=1.e-4
     if strongcoupling:    Tspin=Tk
     else:               Tspin = Ts(z,y_coll(z,xH,Tk,Delta),y_lya(z,Jalpha(Tvir,z),Tk),Tk)
-    #Tspin=Tk
-    #if Tspin<Tk:    Tspin=Tk
     heat21 = 3./4.*Tstar*A10*xH*n0_h/n0_b/Hz(z)*(Tcmb0*(1.+z)/Tspin - 1.)
-    #print z, Tspin/(Tcmb0*(1.+z)), Tk/(Tcmb0*(1.+z)), heat21
     return heat21
 
 def compton_cool( z, xe, Tk ):
     return 4.*sigmaT*c*rho_cmb0*(1.+z)**4./m_ec2*xe*(Tcmb0*(1.+z)-Tk)/Hz(z)
 
 def heat_lyalpha( z, Tk, Delta ):      # Furlanetto, Pritchard 2006
-    #return 4.*np.pi/c*hplanck*nualpha/kelvintoerg*Ic_lyalpha(z,Tk)*DeltanuDalpha(Tk)*Jalpha(Tvir,z)/(n0_b*(1.+z)**3.)
     Jcont = Jalpha_cont( Tvir, z )
     return 4.*np.pi/c*hplanck*nualpha/kelvintoerg*DeltanuDalpha(Tk)/(n0_b*(1.+z)**3.*Delta)*(Ic_lyalpha(z,Tk)*Jcont + Ii_lyalpha(z,Tk)*Jalpha_inject(Tvir,z,Jcont))
 
@@ -184,7 +174,7 @@ def EvolutionEquations(lna, y, Delta): # = dy/dlna (=dy/dt/H), y = [Q, x_e, Ttil
     if lingrowth:   Deltaz = 1. + cosmo.growthFactor(z)/cosmo.growthFactor(z_init)*(Delta-1.)
     else:           Deltaz = Delta
     if Deltaz<0.:   # to check errors
-        print z, Deltaz
+        print( z, Deltaz )
 
     Q, xe, Tt = y[0], y[1], y[2]
     if Tt<0.:    Tt = 1.e-4
@@ -201,7 +191,6 @@ def EvolutionEquations(lna, y, Delta): # = dy/dlna (=dy/dt/H), y = [Q, x_e, Ttil
     else:
         xe_eq = NX*fstar*(-(1.+z))*dFcolldz(Tvir,z)*(1.-xe) - alpha_recB(T)*n_H(z)/Hz(z)*xe**2.   # dx_e/dlna, ionized fraction in neutral regions, ots aprox assumed
 
-    #temp_eq = -2*T - T*xe_eq/(1.+xe) + 2./3.*Heat_rate(xi_heat, Tvir, z, xe, T*Deltaz**(2./3.), Deltaz)/(1.+xe)/Deltaz**(2./3.)        # dT/Deltaz^(2/3)/dlna
     temp_eq = 2./3.*Heat_rate( z, xe, T, Deltaz)/Deltaz**(2./3.)/(1.+z)**2.        # dTtilde/dlna
 
     return [ion_eq, xe_eq, temp_eq]
@@ -289,6 +278,9 @@ def y_lya(z,Jalph,T):   # Ly-alpha coupling coefficient, y_alpha = P_10/A_10*Tst
     else:
         return  (16.*np.pi**2.*Tstar*e2*f12*c)/(27.*A10*T*m_ec2*eVtoerg)*S_alpha_wing(z,T)*Jalph
 
+def x_lya(z,Jalph,T):   # Ly-alpha coupling coefficient, x_alpha = y_alpha*T_k/T_cmb
+    return y_lya(z,Jalph,T)*T/(Tcmb0*(1.+z))
+
 def kappa_eH(T):
     if T<1.:
         ke = 0.
@@ -314,8 +306,11 @@ def kappa_pH(T):    # My own parameterization, based on Furnaletto & Furnaletto 
         kp = 2.*kappa_HH(130.)
     return kp
 
-def y_coll(z,xH,T,Delta):   # Collisional coupling coefficient
+def y_coll(z,xH,T,Delta):   # Collisional coupling coefficient y_coll
     return Tstar/T/A10*n_H(z)*Delta*( kappa_HH(T)*xH + kappa_eH(T)*(1.-xH) + kappa_pH(T)*(1.-xH) )
+
+def x_coll(z,xH,T,Delta):   # Collisional coupling coefficient x_coll = y_coll*T_k/T_cmb
+    return y_coll(z,xH,T,Delta)*T/(Tcmb0*(1.+z))
 
 def Ts(z,yc,yly,Tk):    # Spin temperature [K]
     return (Tcmb0*(1.+z) + (yc + yly)*Tk)/(1. + yc + yly)

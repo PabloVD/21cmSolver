@@ -1,6 +1,6 @@
 # 21cmSolver
 
-Python code to compute de 21 cm global signal. It allow to evolve the signal for a grid of astrophysical parameters, taking into account over densities.
+Python code to compute the 21 cm global signal. It allows to evolve the signal for a grid of astrophysical parameters, taking into account overdensities.
 For more info, see arxivXXXX
 
 Description of the different programs:
@@ -11,14 +11,14 @@ Description of the different programs:
 
 - Plotter.py: code to plot the ionization fraction, temperatures, global signal and Lyman alpha flux.
 
-In the Source folder: the needed functions and constants are included.
+In the Source folder:
 
-- constants.py: some relevant physical constants
+- constants.py: some relevant physical constants.
 
-- astro_params.py: the relevant astrophysical parameters are included here. You may want to change these values (it can be done in Runner.py)
+- astro_params.py: the relevant astrophysical parameters are included here. You may want to change these values (it can be done in Runner.py).
 
-- functions.py: functions for solving the differential equations
+- functions.py: functions for solving the differential equations.
 
-- lyalpha_rt.py: functions related with the Lyman-alpha radiative transfer
+- lyalpha_rt.py: functions related with the Lyman-alpha radiative transfer.
 
 This code makes use of several Python libraries, such as numpy, scipy and colossus.

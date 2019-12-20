@@ -32,7 +32,7 @@ kelvintoeV = kelvintoerg/eVtoerg   # 1 kelvin = kelvintoeV eV
 G_N = 6.67259e-8 # cm^3 g^-1 s^-2
 hlittle = 0.678
 H0 = hlittle*3.2407e-18 # s^-1
-Omega_b = 0.02226/hlittle**2.
+Omega_b = 0.02226/hlittle**2.   # 0.048 with hlittle = 0.678
 Omega_m = 0.308
 Omega_dm = Omega_m - Omega_b
 Omega_l = 1.-Omega_m

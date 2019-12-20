@@ -15,7 +15,7 @@ fstar = 0.01
 # Ionization efficiency, Nion*fstar*fesc
 # Nion: number of ionizing photons per baryons
 # fesc: fraction of photons escaping to the IGM
-xi_ion = 1.000000e+00 
+xi_ion = 0.000000e+00 
 
 # Minimum energy for X-rays, eV
 hnu_thresh = 0.5e3

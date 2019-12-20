@@ -1,7 +1,7 @@
 """"
 Initializing code
 Pablo Villanueva Domingo
-Last update: 18/12/18
+Last update: 6/11/19
 """
 
 import numpy as np
