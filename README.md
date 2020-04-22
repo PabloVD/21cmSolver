@@ -1,7 +1,7 @@
 # 21cmSolver
 
-Python code to compute the 21 cm global signal. It allows to evolve the signal for a grid of astrophysical parameters, taking into account overdensities.
-For more info, see arxivXXXX
+Python code to compute the 21 cm global signal. It allows to evolve the signal for a grid of astrophysical parameters, taking into account the overdensities.
+For more info, see [arXiv:1912.09488](https://arxiv.org/abs/1912.09488), [Phys. Rev. D 101, 083502](https://journals.aps.org/prd/abstract/10.1103/PhysRevD.101.083502)
 
 Description of the different programs:
 
