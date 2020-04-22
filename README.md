@@ -21,4 +21,4 @@ In the Source folder:
 
 - lyalpha_rt.py: functions related with the Lyman-alpha radiative transfer.
 
-This code makes use of several Python libraries, such as numpy, scipy and colossus.
+This code makes use of several Python libraries, such as numpy, scipy and [colossus](https://bdiemer.bitbucket.io/colossus/).
