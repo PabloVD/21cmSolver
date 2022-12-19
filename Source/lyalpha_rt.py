@@ -9,6 +9,7 @@ import numpy as np
 from scipy import integrate
 from Source.constants import *
 from scipy import special
+import mpmath
 
 def Hz(z):  # put in another module
     return H0*np.sqrt(Omega_m*(1.+z)**3. + Omega_l)
@@ -81,7 +82,7 @@ def S_alpha_exact(z,Tk):    # using continuous
 
 def S_alpha_wing(z,Tk):
     alf = eta_lya(Tk)*(3.*a_voigt(Tk)/2./np.pi/gammaGP(z))**(1./3.)
-    OneMinusSalpha = 4.*alf/9.*( 3.**(2./3.)*np.pi*special.airy(-2.*alf/3.**(1./3.))[2] + (3.*alf**2.)*special.hyp1f2(1.,4./3.,5./3.,-8.*alf**3./27.)[0] )
+    OneMinusSalpha = 4.*alf/9.*( 3.**(2./3.)*np.pi*special.airy(-2.*alf/3.**(1./3.))[2] + (3.*alf**2.)*float(mpmath.hyp1f2(1.,4./3.,5./3.,-8.*alf**3./27.)) )
     return 1.-OneMinusSalpha
 
 def S_alpha_wing_1st(z,Tk):

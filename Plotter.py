@@ -12,12 +12,13 @@ import os
 colors = ["red","blue","green","purple"]
 lines = ["-","--",":","-."]
 
+# Create different figures for each cosmological feature
 fig_x, (ax_x) = plt.subplots(1,1)
 fig_T, (ax_T, ax_21) = plt.subplots(2, 1, sharex=True)
 fig_Ja, (axJa) = plt.subplots(1, 1)
 fig_T.subplots_adjust(hspace=0)
 
-# Astrophysical parameters grid
+# Astrophysical parameters grid whose results already have been simulated
 xi_ionvals = [0.]
 xi_heatvals = [0.1,1.,10.]
 Tvirvals = [1.e3,1.e4]
@@ -45,7 +46,7 @@ for i, xi_ion in enumerate(xi_ionvals):
 
 customlegend, Jalegend = [], []
 for n, xi_heat in enumerate(xi_heatvals):
-    customlegend.append( Line2D([0], [0], color=colors[n], lw=4, label="$\\xi_{heat}=$"+"{:.3f}".format(xi_heat)))
+    customlegend.append( Line2D([0], [0], color=colors[n], lw=4, label="$\\xi_{heat}=$"+"{:.1f}".format(xi_heat)))
 for j, TT in enumerate(Tvirvals):
     customlegend.append( Line2D([0], [0], color="black", linestyle=lines[j], label="$T_{vir}^{min}="+scinot(TT)+"$ K"))
     Jalegend.append( Line2D([0], [0], color="black", linestyle=lines[j], label="$T_{vir}^{min}="+scinot(TT)+"$ K"))

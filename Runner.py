@@ -27,17 +27,12 @@ def Routine_Solver(xi_ion,xi_heat,Tvir,Deltavec):
     for i, D in enumerate(Deltavec):
         print("Delta = {:2e}".format(D)+", "+str(i+1)+" of "+str(len(Deltavec)))
         replaceAll(solverfile,"Delta = ","Delta = {:2e} \n".format(D))
-        os.system("python "+solverfile)
+        os.system("python3 "+solverfile)
 
 paramfile = "Source/astro_params.py"
 solverfile = "21cmEvolver.py"
 
 # Astrophysical parameters grid
-xi_ionvals = [0.]
-xi_heatvals = [0.]#[0.1,1.,10.]#np.logspace(-3,2,num=50)#[0.1,1.,10.]
-#xi_heatvals = [0.1,1.,10.]
-Tvirvals = [1.e4]
-
 xi_ionvals = [0.]
 xi_heatvals = [0.1,1.,10.]
 Tvirvals = [1.e3,1.e4]
@@ -45,6 +40,8 @@ Tvirvals = [1.e3,1.e4]
 # numDelta = 30 is enough between 1.e-2 and 30
 minDelta, maxDelta, numDelta = 1.e-2, 10., 30
 
+# Specify the overdensity Delta values
+#Deltavec = np.logspace(np.log10(minDelta),np.log10(maxDelta),num=numDelta)
 # For Delta constant:
 Deltavec = [1.]#np.logspace(np.log10(minDelta),np.log10(maxDelta),num=numDelta)
 # For Delta growing linearly:
